@@ -5,6 +5,7 @@
 from flask import Flask, jsonify, render_template, request
 import json
 import numpy as np
+from gsheetsdb import connect
 import pandas as pd
 import geopy.distance as ps
 from linebot.models import (
@@ -20,7 +21,11 @@ app = Flask(__name__)
 lineaccesstoken = 'F7p77Oy6+pQ7D3zh+dJv1hHWg2Fh2FmRnrRneZoz6OP1e1PFk/F0Wv0jYOAhx7hpF63nOuFCNnFaqavShreVny/b1g5+CAOksfaNSj6ES4ZTA20cXL/xUlWRDq+Oa2zW40IPhJ+qeEwhpOjBrG74KQdB04t89/1O/w1cDnyilFU='
 line_bot_api = LineBotApi(lineaccesstoken)
 
-station= pd.read_excel('Location.xlsx')
+conn = connect()
+query = """
+SELECT * FROM "https://docs.google.com/spreadsheets/d/1tohK_nKOSJQLBeL6wej6UXS5PSi6IqEQStUQL27nSgo/edit#gid=2125374756"
+"""
+station = pd.read_sql(query, con=conn)
 
 ####################### new ########################
 @app.route('/')
